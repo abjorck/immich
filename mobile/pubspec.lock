@@ -1246,6 +1246,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  punycode_converter:
+    dependency: "direct main"
+    description:
+      name: punycode_converter
+      sha256: "02d77b16c40ce9503ade3897eae6e72f2c1621a0f873be2d25bbf898c0663df8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   riverpod:
     dependency: transitive
     description:

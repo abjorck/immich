@@ -369,7 +369,7 @@ class SharedLinkEditPage extends HookConsumerWidget {
         serverInfoProvider.select((s) => s.serverConfig.externalDomain),
       );
       var serverUrl =
-          externalDomain.isNotEmpty ? externalDomain : getServerUrl();
+          externalDomain.isNotEmpty ? externalDomain : getServerUrlForDisplay();
       if (serverUrl != null && !serverUrl.endsWith('/')) {
         serverUrl += '/';
       }

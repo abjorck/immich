@@ -190,11 +190,11 @@ class AppBarServerInfo extends HookConsumerWidget {
                               context.isDarkTheme ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
-                        message: getServerUrl() ?? '--',
+                        message: getServerUrlForDisplay() ?? '--',
                         preferBelow: false,
                         triggerMode: TooltipTriggerMode.tap,
                         child: Text(
-                          getServerUrl() ?? '--',
+                          getServerUrlForDisplay() ?? '--',
                           style: TextStyle(
                             fontSize: contentFontSize,
                             color: context.textTheme.labelSmall?.color

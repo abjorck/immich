@@ -8,6 +8,7 @@ import 'package:immich_mobile/utils/url_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:http/http.dart';
+import 'package:punycode_converter/punycode_converter.dart';
 
 class ApiService implements Authentication {
   late ApiClient _apiClient;
@@ -82,7 +83,7 @@ class ApiService implements Authentication {
   Future<String> _resolveEndpoint(String serverUrl) async {
     final url = sanitizeUrl(serverUrl);
 
-    if (!await _isEndpointAvailable(serverUrl)) {
+    if (!await _isEndpointAvailable(url)) {
       throw ApiException(503, "Server is not reachable");
     }
 

@@ -1,4 +1,6 @@
 import 'package:immich_mobile/entities/store.entity.dart';
+import 'package:logging/logging.dart';
+import 'package:punycode_converter/punycode_converter.dart';
 
 String sanitizeUrl(String url) {
   // Add schema if none is set
@@ -6,17 +8,27 @@ String sanitizeUrl(String url) {
       url.trimLeft().startsWith(RegExp(r"https?://")) ? url : "https://$url";
 
   // Remove trailing slash(es)
-  return urlWithSchema.trimRight().replaceFirst(RegExp(r"/+$"), "");
+  final trimmed = urlWithSchema.trimRight().replaceFirst(RegExp(r"/+$"), "");
+  try {
+    final uri = Uri.parse(trimmed);
+    return uri.punyEncoded.toString();
+  } on PunycodeException catch (e, st) {
+    return trimmed;
+  }
 }
 
-String? getServerUrl() {
+String? getServerUrlForDisplay() {
   final serverUrl = Store.tryGet(StoreKey.serverEndpoint);
   final serverUri = serverUrl != null ? Uri.tryParse(serverUrl) : null;
   if (serverUri == null) {
     return null;
   }
 
-  return serverUri.hasPort
-      ? "${serverUri.scheme}://${serverUri.host}:${serverUri.port}"
-      : "${serverUri.scheme}://${serverUri.host}";
+  final decodedHost = Punycode.domainDecode(serverUri.host);
+  final log = Logger("UrlHelper");
+  final serverString = serverUri.hasPort
+      ? "${serverUri.scheme}://$decodedHost:${serverUri.port}"
+      : "${serverUri.scheme}://$decodedHost";
+  log.info("getServerUrl: $serverString");
+  return serverString;
 }
